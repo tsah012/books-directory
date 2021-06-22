@@ -9,6 +9,14 @@ const server = express();
 server.use(express.static(path.join(__dirname, 'public')));
 server.use(express.urlencoded());
 server.use(express.json());
+
+server.get("/", function(req, res){
+    res.sendFile(path.join(__dirname, 'pages/login.html'));
+});
+
+server.post('/login', function(req, res){
+    res.send('jj');
+});
 server.use('/api', appRouter);
 
 // Initialize connection with db and keep it opened

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+</head>
+
+<body>
+    <form action="/login" method="POST" onsubmit="return validateForm()">
+        User:
+        <input type="text" name="username" id="username">
+        <label id='username-error-message' style="color: red; font-weight: bold; margin-left: 10px;"></label>
+        <br>
+        Password:
+        <input type="text" name="password" id="password">
+        <label id='password-error-message' style="color: red; font-weight: bold; margin-left: 10px;"></label>
+        <br><br>
+        <input type="submit" value="log in" style="font-weight: bold;">
+    </form>
+</body>
+<script src="/login/login.js" type="text/javascript"></script>
+
+</html>

@@ -6,18 +6,19 @@ const appRouter = require("./custom_modules/appRouter")
 
 const server = express();
 
-server.use(express.static(path.join(__dirname, 'public')));
+server.use(express.static(path.join(__dirname, 'client')));
 server.use(express.urlencoded());
 server.use(express.json());
+server.use('/api', appRouter);
+
 
 server.get("/", function(req, res){
-    res.sendFile(path.join(__dirname, 'pages/login.html'));
+    res.sendFile(path.join(__dirname, 'client/login/index.html'));
 });
 
 server.post('/login', function(req, res){
-    res.send('jj');
+    res.sendFile(path.join(__dirname, 'client/home/index.html'));
 });
-server.use('/api', appRouter);
 
 // Initialize connection with db and keep it opened
 mongodb.connect(config.dbConnectionString + config.dbName, function (err, database) {

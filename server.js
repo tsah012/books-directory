@@ -3,11 +3,13 @@ const path = require('path');
 const mongodb = require('mongodb').MongoClient;
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 const appRouter = require("./custom_modules/appRouter");
 
 const server = express();
 
 server.use(morgan('dev'));
+server.use(cors());
 server.use(express.static(path.join(__dirname, 'client')));
 server.use(express.urlencoded());
 server.use(express.json());
@@ -15,12 +17,10 @@ server.use('/api', appRouter);
 
 
 server.get("/", function(req, res){
-    console.log('request: /');
     res.sendFile(path.join(__dirname, 'client/login/login.html'));
 });
 
 server.post('/', function(req, res){
-    console.log('request: /');
     res.sendFile(path.join(__dirname, 'client/home/index.html'));
 });
 

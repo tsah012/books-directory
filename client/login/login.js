@@ -1,4 +1,5 @@
 async function login() {
+    clearMessages();
     let data = {
         username: document.getElementById('username').value,
         password: String(document.getElementById('password').value)
@@ -22,7 +23,9 @@ async function login() {
         try {
             let resp = await fetch(url);
             let user = await resp.json();
-            console.log('user: ' + user);
+            if (!user) {
+                document.getElementById('message').textContent = 'USER NAME OR PASSWORD DOES NOT EXIST';
+            }
         }
         catch (error) {
             console.log('error occurred during login. error:\n' + error);
@@ -37,4 +40,11 @@ function validateEmail(email) {
 
 function validatePassword(password) {
     return password.trim().length;
+}
+
+function clearMessages() {
+    document.getElementById('username-error-message').textContent = '';
+    document.getElementById('password-error-message').textContent = '';
+    document.getElementById('message').textContent = '';
+
 }

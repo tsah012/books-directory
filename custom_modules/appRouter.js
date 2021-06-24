@@ -20,7 +20,7 @@ router.get('/library', async function (req, res) {
 
 router.get('/user', async function (req, res) {
     try {
-        let user = await usersDAL.getUser(req.app.locals.db, req.query.username);
+        let user = await usersDAL.getUser(req.app.locals.db, req.query.username, req.query.password);
         res.send(user);
     }
     catch (err) {

@@ -26,6 +26,14 @@ async function login() {
             if (!user) {
                 document.getElementById('message').textContent = 'USER NAME OR PASSWORD DOES NOT EXIST';
             }
+            else{
+                //Save in local storage
+                localStorage['user'] = JSON.stringify(user);
+                //Set cookie for future entries
+                setCookie('Logged', user.mail, 1);
+                //Load main page with books list
+                window.location.href = '/';
+            }
         }
         catch (error) {
             console.log('error occurred during login. error:\n' + error);
@@ -47,4 +55,14 @@ function clearMessages() {
     document.getElementById('password-error-message').textContent = '';
     document.getElementById('message').textContent = '';
 
+}
+
+function setCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
 }

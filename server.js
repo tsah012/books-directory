@@ -2,12 +2,15 @@ const config = require("./configuration_settings");
 const path = require('path');
 const mongodb = require('mongodb').MongoClient;
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const cors = require('cors');
 const appRouter = require("./custom_modules/appRouter");
+const usersDAL = require('./custom_modules/DAL/users');
 
 const server = express();
 
+server.use(cookieParser());
 server.use(morgan('dev'));
 server.use(cors());
 server.use(express.static(path.join(__dirname, 'client')));
@@ -16,12 +19,15 @@ server.use(express.json());
 server.use('/api', appRouter);
 
 
-server.get("/", function(req, res){
-    res.sendFile(path.join(__dirname, 'client/login/login.html'));
-});
 
-server.post('/', function(req, res){
-    res.sendFile(path.join(__dirname, 'client/home/index.html'));
+
+server.get("/", async function (req, res) {
+    if (req.cookies.Logged){
+        res.sendFile(path.join(__dirname, 'client/home/index.html'));
+    }
+    else {
+        res.sendFile(path.join(__dirname, 'client/login/login.html'));
+    }
 });
 
 // Initialize connection with db and keep it opened

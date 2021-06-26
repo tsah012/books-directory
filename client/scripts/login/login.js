@@ -1,24 +1,24 @@
 async function login() {
     clearMessages();
     let data = {
-        name: document.getElementById('name').value,
+        mail: document.getElementById('mail').value,
         password: String(document.getElementById('password').value)
     };
 
     let all_valid = true;
 
-    if (!validateField(data.name)) {
+    if (!validateEmail(data.mail)) {
         all_valid = false;
-        document.getElementById('name-error-message').textContent = 'NAME IS NOT VALID';
+        document.getElementById('mail-error-message').textContent = 'EMAIL IS NOT VALID';
     }
 
-    if (!validateField(data.password)) {
+    if (!validatePassword(data.password)) {
         all_valid = false;
         document.getElementById('password-error-message').textContent = 'PASSWORD IS NOT VALID';
     }
 
     if (all_valid) {
-        let url = 'api/user';
+        let url = window.location.origin + '/api/user/authenticate';
         try {
             let resp = await fetch(url, {
                 method: 'POST',
@@ -29,15 +29,15 @@ async function login() {
                 body: JSON.stringify(data)});
             let user = await resp.json();
             if (!user) {
-                document.getElementById('message').textContent = 'NAME OR PASSWORD IS INCORRECT';
+                document.getElementById('message').textContent = 'MAIL OR PASSWORD IS INCORRECT';
             }
             else{
                 //Save in local storage
-                localStorage['user'] = JSON.stringify(user);
-                //Set cookie for future entries
-                setCookie('Logged', user.mail, 30);
+                localStorage['user'] = JSON.stringify(data.mail);
+                //Set cookie for future entries for the next 30 days
+                setCookie('Logged', data.mail, 30);
                 //Load main page with books list
-                window.location.href = '/';
+                window.location.href = window.location.origin;
             }
         }
         catch (error) {
@@ -46,12 +46,17 @@ async function login() {
     }
 }
 
-function validateField(password) {
+function validateEmail(email) {
+    let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+
+function validatePassword(password) {
     return password.trim().length;
 }
 
 function clearMessages() {
-    document.getElementById('name-error-message').textContent = '';
+    document.getElementById('mail-error-message').textContent = '';
     document.getElementById('password-error-message').textContent = '';
     document.getElementById('message').textContent = '';
 

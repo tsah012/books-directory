@@ -21,7 +21,7 @@ async function register() {
     if (all_valid) {
         try {
                 //Send request for adding new user
-                let url = '/api/user/add';
+                let url = window.location.origin + '/api/user/add';
                 let resp = await fetch(url, {
                     method: 'POST',
                     headers: {
@@ -37,7 +37,7 @@ async function register() {
             }
             else{
                 //Load login page in case registration was successful
-                window.location.href = '/login';
+                window.location.href = window.location.origin + '/login';
             }
         }
         catch (error) {

@@ -34,6 +34,19 @@ router.post('/user', async function (req, res) {
     }
 });
 
+router.post('/user/authenticate', async function (req, res) {
+    try {
+        let success = await usersDAL.authenticateUser(req.app.locals.db, req.body.mail, req.body.password);
+        res.send(success);
+    }
+    catch (err) {
+        let msg = "Issue occured when fetching user from users collection. Error:\n" + err;
+        console.log(msg);
+        res.status(httpStatusCodes.StatusCodes.INTERNAL_SERVER_ERROR);
+        res.send(false);
+    }
+});
+
 router.post('/user/add', async function (req, res) {
     try {
         let user = await usersDAL.addUser(req.app.locals.db, req.body.name, req.body.mail, req.body.password);

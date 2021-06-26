@@ -28,12 +28,12 @@ module.exports.addUser = async function (db, _name, _mail, _password) {
 module.exports.authenticateUser = async function (db, _mail, _password) {
     try {
         let user = await db.collection('users').findOne({mail:_mail, password:_password});
-        console.log('DAL getUser result: ' + user);
+        console.log('DAL authenticateUser result: ' + user);
         if (!user){
             return false;
         }
         
-        return user;
+        return true;
     } 
     catch (error) {
         throw error;

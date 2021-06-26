@@ -21,16 +21,16 @@ server.use('/api', appRouter);
 
 
 
-server.get("/", isLogged, function (req, res) {
-    res.sendFile(path.join(__dirname, 'client/home/index.html'));
+server.get("/", isLogged, async function (req, res) {
+    res.sendFile(path.join(__dirname, 'client/pages/home/index.html'));
 });
 
-server.get('/login', isNotLogged, function (req, res){
-    res.sendFile(path.join(__dirname, 'client/login/index.html'));
+server.get("/login", isNotLogged, async function (req, res){
+    res.sendFile(path.join(__dirname, 'client/pages/login/index.html'));
 });
 
-server.get('/register', isNotAuthinticated, function (req, res){
-    res.sendFile(path.join(__dirname, 'client/register/index.html'));
+server.get("/register", isNotLogged, async function (req, res){
+    res.sendFile(path.join(__dirname, 'client/pages/register/index.html'));
 });
 
 

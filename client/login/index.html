@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+</head>
+
+<body>
+    <h1>Login</h1>
+    <div>
+        Name:<br>
+        <input type="text" name="name" id="name">
+        <label id='name-error-message' style="color: red; font-weight: bold; margin-left: 10px;"></label>
+    </div>
+
+    <div>
+        Password:<br>
+        <input type="text" name="password" id="password">
+        <label id='password-error-message' style="color: red; font-weight: bold; margin-left: 10px;"></label>
+        <br><br>
+        <input type="button" value="Login" style="font-weight: bold;" onclick="login()">
+    </div>
+    
+    <label id='message' style="color: black; font-weight: bold; margin-left: 10px;"></label>
+</body>
+<script src="/login/login.js" type="text/javascript"></script>
+
+</html>

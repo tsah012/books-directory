@@ -1,18 +1,18 @@
 async function login() {
     clearMessages();
     let data = {
-        username: document.getElementById('username').value,
+        name: document.getElementById('name').value,
         password: String(document.getElementById('password').value)
     };
 
     let all_valid = true;
 
-    if (!validateEmail(data.username)) {
+    if (!validateField(data.name)) {
         all_valid = false;
-        document.getElementById('username-error-message').textContent = 'USER NAME MUST BE A VALID EMAIL';
+        document.getElementById('name-error-message').textContent = 'NAME IS NOT VALID';
     }
 
-    if (!validatePassword(data.password)) {
+    if (!validateField(data.password)) {
         all_valid = false;
         document.getElementById('password-error-message').textContent = 'PASSWORD IS NOT VALID';
     }
@@ -29,13 +29,13 @@ async function login() {
                 body: JSON.stringify(data)});
             let user = await resp.json();
             if (!user) {
-                document.getElementById('message').textContent = 'USER NAME OR PASSWORD DOES NOT EXIST';
+                document.getElementById('message').textContent = 'NAME OR PASSWORD IS INCORRECT';
             }
             else{
                 //Save in local storage
                 localStorage['user'] = JSON.stringify(user);
                 //Set cookie for future entries
-                setCookie('Logged', user.mail, 1);
+                setCookie('Logged', user.mail, 30);
                 //Load main page with books list
                 window.location.href = '/';
             }
@@ -46,17 +46,12 @@ async function login() {
     }
 }
 
-function validateEmail(email) {
-    let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email);
-}
-
-function validatePassword(password) {
+function validateField(password) {
     return password.trim().length;
 }
 
 function clearMessages() {
-    document.getElementById('username-error-message').textContent = '';
+    document.getElementById('name-error-message').textContent = '';
     document.getElementById('password-error-message').textContent = '';
     document.getElementById('message').textContent = '';
 

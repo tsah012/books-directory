@@ -21,14 +21,38 @@ server.use('/api', appRouter);
 
 
 
-server.get("/", async function (req, res) {
-    if (req.cookies.Logged){
-        res.sendFile(path.join(__dirname, 'client/home/index.html'));
-    }
-    else {
-        res.sendFile(path.join(__dirname, 'client/login/login.html'));
-    }
+server.get("/", isLogged, function (req, res) {
+    res.sendFile(path.join(__dirname, 'client/home/index.html'));
 });
+
+server.get('/login', isNotLogged, function (req, res){
+    res.sendFile(path.join(__dirname, 'client/login/index.html'));
+});
+
+server.get('/register', isNotAuthinticated, function (req, res){
+    res.sendFile(path.join(__dirname, 'client/register/index.html'));
+});
+
+
+
+function isLogged(req, res, next) {
+    if (req.cookies.Logged) {
+        return next();
+    }
+
+    res.redirect('/login');
+}
+
+function isNotLogged(req, res, next){
+    if (!req.cookies.Logged){
+        return next();
+    }
+
+    res.redirect('/');
+}
+
+
+
 
 // Initialize connection with db and keep it opened
 mongodb.connect(config.dbConnectionString + config.dbName, function (err, database) {

@@ -20,18 +20,30 @@ router.get('/library', async function (req, res) {
 
 router.post('/user', async function (req, res) {
     try {
-        let user = await usersDAL.getUser(req.app.locals.db, req.body.username, req.body.password);
+        let user = await usersDAL.getUser(req.app.locals.db, req.body.mail);
         // Do not return sensitive data to client
         delete user._id;
         delete user.password;
-        delete user.admin;
         res.send(user);
     }
     catch (err) {
         let msg = "Issue occured when fetching user from users collection. Error:\n" + err;
         console.log(msg);
         res.status(httpStatusCodes.StatusCodes.INTERNAL_SERVER_ERROR);
-        res.send(msg);
+        res.send(false);
+    }
+});
+
+router.post('/user/add', async function (req, res) {
+    try {
+        let user = await usersDAL.addUser(req.app.locals.db, req.body.name, req.body.mail, req.body.password);
+        res.send(user);
+    }
+    catch (err) {
+        let msg = "Issue occured when fetching user from users collection. Error:\n" + err;
+        console.log(msg);
+        res.status(httpStatusCodes.StatusCodes.INTERNAL_SERVER_ERROR);
+        res.send(false);
     }
 });
 

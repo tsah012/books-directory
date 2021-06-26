@@ -18,10 +18,15 @@ async function login() {
     }
 
     if (all_valid) {
-        let baseUrl = window.location.origin;
-        let url = baseUrl + '/api/user?username=' + data.username + '&password=' + data.password;
+        let url = 'api/user';
         try {
-            let resp = await fetch(url);
+            let resp = await fetch(url, {
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)});
             let user = await resp.json();
             if (!user) {
                 document.getElementById('message').textContent = 'USER NAME OR PASSWORD DOES NOT EXIST';

@@ -1,12 +1,17 @@
 async function register() {
     clearMessages();
     let data = {
-        name: document.getElementById('name').value,
-        mail: document.getElementById('mail').value,
-        password: String(document.getElementById('password').value)
+        name: document.getElementById('name').value.trim(),
+        mail: document.getElementById('mail').value.trim(),
+        password: String(document.getElementById('password').value).trim()
     };
 
     let all_valid = true;
+
+    if (!validateName(data.name)) {
+        all_valid = false;
+        document.getElementById('name-error-message').textContent = 'NAME IS NOT VALID';
+    }
 
     if (!validateEmail(data.mail)) {
         all_valid = false;

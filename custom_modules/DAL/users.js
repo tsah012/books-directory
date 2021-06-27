@@ -13,9 +13,9 @@ module.exports.getUser = async function (db, _mail) {
     }
 }
 
-module.exports.addUser = async function (db, _name, _mail, _password) {
+module.exports.addUser = async function (db, _name, _mail, _password, _admin=false, _books=[]) {
     try {
-        let user = await db.collection('users').insertOne({name: _name, mail:_mail, password:_password});
+        let user = await db.collection('users').insertOne({name: _name, mail:_mail, password:_password, admin:_admin, books:_books});
         console.log('DAL addUser result: ' + user);
         return user;   
     } 

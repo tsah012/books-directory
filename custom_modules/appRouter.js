@@ -55,7 +55,6 @@ router.post('/user/add', async function (req, res) {
     catch (err) {
         let msg = "Issue occured when fetching user from users collection. Error:\n" + err;
         console.log(msg);
-        res.status(httpStatusCodes.StatusCodes.INTERNAL_SERVER_ERROR);
         res.send(false);
     }
 });

@@ -5,7 +5,8 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const cors = require('cors');
-const appRouter = require("./custom_modules/appRouter");
+const usersRouter = require("./custom_modules/routers/users");
+const booksRouter = require("./custom_modules/routers/books");
 const usersDAL = require('./custom_modules/DAL/users');
 
 const server = express();
@@ -16,8 +17,8 @@ server.use(cors());
 server.use(express.static(path.join(__dirname, 'client')));
 server.use(express.urlencoded());
 server.use(express.json());
-server.use('/api', appRouter);
-
+server.use('/api', usersRouter);
+server.use('/api', booksRouter);
 
 
 

@@ -29,6 +29,11 @@ server.get("/login", isNotLogged, async function (req, res){
     res.sendFile(path.join(__dirname, 'client/pages/login/index.html'));
 });
 
+server.get("/logout", isLogged, async function (req, res){
+    res.clearCookie('Logged');
+    res.redirect('/login');
+});
+
 server.get("/register", isNotLogged, async function (req, res){
     res.sendFile(path.join(__dirname, 'client/pages/register/index.html'));
 });

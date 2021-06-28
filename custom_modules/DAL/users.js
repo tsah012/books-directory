@@ -1,7 +1,9 @@
-module.exports.getUser = async function (db, _mail) {
+const mongo = require('../../mongo');
+
+module.exports.getUser = async function (_mail) {
     try {
-        let user = await db.collection('users').findOne({mail:_mail});
-        console.log('DAL getUser result: ' + user);
+        const db = mongo.getDB();
+        const user = await db.collection('users').findOne({mail:_mail});
         if (!user){
             return false;
         }
@@ -13,11 +15,11 @@ module.exports.getUser = async function (db, _mail) {
     }
 }
 
-module.exports.addUser = async function (db, _name, _mail, _password, _admin=false, _books=[]) {
+module.exports.addUser = async function (_name, _mail, _password, _admin=false, _books=[]) {
     try {
-        let user = await db.collection('users').insertOne({name: _name, mail:_mail, password:_password, admin:_admin, books:_books});
-        console.log('DAL addUser result: ' + user);
-        return user;   
+        const db = mongo.getDB();
+        const user = await db.collection('users').insertOne({name: _name, mail:_mail, password:_password, admin:_admin, books:_books});
+        return user;
     } 
     catch (error) 
     {
@@ -25,10 +27,10 @@ module.exports.addUser = async function (db, _name, _mail, _password, _admin=fal
     }
 }
 
-module.exports.authenticateUser = async function (db, _mail, _password) {
+module.exports.authenticateUser = async function (_mail, _password) {
     try {
-        let user = await db.collection('users').findOne({mail:_mail, password:_password});
-        console.log('DAL authenticateUser result: ' + user);
+        const db = mongo.getDB()
+        const user = await db.collection('users').findOne({mail:_mail, password:_password});
         if (!user){
             return false;
         }

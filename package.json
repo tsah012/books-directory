@@ -19,6 +19,7 @@
   "homepage": "https://github.com/tsah012/books-directory#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "connect-mongodb-session": "^2.4.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "express": "^4.17.1",
@@ -32,6 +33,6 @@
     "path": "^0.12.7"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.9"
   }
 }

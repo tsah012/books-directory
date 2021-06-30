@@ -8,7 +8,6 @@ module.exports.configure = function(passport) {
 
     passport.serializeUser((user, done) => { done(null, user.mail) });
     passport.deserializeUser((mail, done) => { done(null, usersDAL.getUser(mail)) });
-
 }
 
 async function authenticateUser(mail, password, done) {

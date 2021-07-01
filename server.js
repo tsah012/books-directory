@@ -2,6 +2,7 @@ const config = require("./configuration_settings");
 const passportConfiguration = require('./passport-config');
 const usersRouter = require("./custom_modules/routers/users");
 const booksRouter = require("./custom_modules/routers/books");
+const auth = require('./custom_modules/routers/authMiddlewares')
 const usersDAL = require('./custom_modules/DAL/users');
 const mongo = require('./mongo');
 
@@ -41,31 +42,26 @@ server.use(session({
     }
 }));
 
-// server.use(passport.initialize());
-// server.use(passport.session());
+server.use(passport.initialize());
+server.use(passport.session());
+passportConfiguration.configure(passport);
 
 // routers
 server.use('/api', usersRouter);
 server.use('/api', booksRouter);
 
-
-
-// passportConfiguration.configure(passport);
-
-server.get("/", isLogged, async function (req, res) {
+server.get("/", auth.isAuth, async function (req, res) {
     res.sendFile(path.join(__dirname, 'client/pages/home/index.html'));
 });
 
-server.get("/login", isNotLogged, async function (req, res) {
-    res.sendFile(path.join(__dirname, 'client/pages/login/index.html'));
-});
+server.get("/login", passport.authenticate('local', {failureRedirect:'/login', successRedirect: '/'}));
 
-server.get("/logout", isLogged, async function (req, res) {
-    res.clearCookie('Logged');
+server.post("/logout", async function (req, res) {
+    req.logOut();
     res.redirect('/login');
 });
 
-server.get("/register", isNotLogged, async function (req, res) {
+server.get("/register", async function (req, res) {
     res.sendFile(path.join(__dirname, 'client/pages/register/index.html'));
 });
 
@@ -78,24 +74,7 @@ mongo.connect(function () {
 });
 
 
-// Custom Middlewares
-
-function isLogged(req, res, next) {
-    if (req.cookies.Logged) {
-        return next();
-    }
-
-    res.redirect('/login');
-}
-
-function isNotLogged(req, res, next) {
-    if (!req.cookies.Logged) {
-        return next();
-    }
-
-    res.redirect('/');
-}
-
+// Error handler middleware in order to avoid crushing of the server
 function errorHandler(err, req, res, next){
     if (err){
         console.log(err);

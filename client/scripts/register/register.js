@@ -34,11 +34,11 @@ async function register() {
                       'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(data)});
-                let success = await resp.json();
+                let resData = await resp.json();
 
             // if user already exists, show error message
-            if (!success) {
-                document.getElementById('message').textContent = 'USER WITH SAME EMAIL ALREADY EXISTS';
+            if (!resData.status) {
+                document.getElementById('message').textContent = resData.message;
             }
             else{
                 //Load login page in case registration was successful

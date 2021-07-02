@@ -18,7 +18,7 @@ async function login() {
     }
 
     if (all_valid) {
-        let url = window.location.origin + '/api/user/authenticate';
+        let url = window.location.origin + '/login';
         try {
             let resp = await fetch(url, {
                 method: 'POST',
@@ -27,15 +27,11 @@ async function login() {
                   'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)});
-            let user = await resp.json();
-            if (!user) {
-                document.getElementById('message').textContent = 'MAIL OR PASSWORD IS INCORRECT';
+            let resData = await resp.json();
+            if (!resData.success) {
+                document.getElementById('message').textContent = resData.message;
             }
             else{
-                //Save in local storage
-                localStorage['user'] = JSON.stringify(data.mail);
-                //Set cookie for future entries for the next 30 days
-                setCookie('Logged', data.mail, 30);
                 //Load main page with books list
                 window.location.href = window.location.origin;
             }

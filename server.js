@@ -9,6 +9,7 @@ const mongo = require('./mongo');
 const path = require('path');
 const mongodb = require('mongodb').MongoClient;
 const express = require('express');
+const flash = require('express-flash');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const cookieParser = require('cookie-parser');
@@ -22,7 +23,7 @@ const server = express();
 const mongoSessionStore = new MongoDBStore({
     uri: config.dbConnectionString + config.dbName,
     collection: config.storeCollection
-  });
+});
 
 server.use(cookieParser());
 server.use(morgan('dev'));
@@ -30,6 +31,7 @@ server.use(cors());
 server.use(express.static(path.join(__dirname, 'client')));
 server.use(express.urlencoded());
 server.use(express.json());
+server.use(flash());
 server.use(session({
     secret: config.secret,
     // resave = save session in case nothing is changed. no need, therefore is false
@@ -50,20 +52,40 @@ passportConfiguration.configure(passport);
 server.use('/api', usersRouter);
 server.use('/api', booksRouter);
 
-server.get("/", auth.isAuth, async function (req, res) {
+server.get("/", auth.isAuth, function (req, res) {
     res.sendFile(path.join(__dirname, 'client/pages/home/index.html'));
 });
 
-server.get("/login", passport.authenticate('local', {failureRedirect:'/login', successRedirect: '/'}));
-
-server.post("/logout", async function (req, res) {
-    req.logOut();
-    res.redirect('/login');
+server.get("/login", auth.isNotAuth, function (req, res) {
+    res.sendFile(path.join(__dirname, 'client/pages/login/index.html'));
 });
 
-server.get("/register", async function (req, res) {
+server.post("/login", passport.authenticate('local',
+    { successRedirect: '/success-login', failureRedirect: '/failure-login', failureFlash: true}));
+
+server.delete("/logout", async function (req, res) {
+    req.logOut();
+    res.end();
+});
+
+server.get("/register", auth.isNotAuth, function (req, res) {
     res.sendFile(path.join(__dirname, 'client/pages/register/index.html'));
 });
+
+server.get("/success-login", function (req, res) {
+    res.send({ success: true });
+});
+
+server.get("/failure-login", function (req, res) {
+    try {
+        errorMessage = req.flash().error[0]
+        res.send({ success: false, message: errorMessage });   
+    } catch (error) {
+        console.log(error);
+        res.end();
+    }
+});
+
 
 
 server.use(errorHandler);
@@ -75,9 +97,9 @@ mongo.connect(function () {
 
 
 // Error handler middleware in order to avoid crushing of the server
-function errorHandler(err, req, res, next){
-    if (err){
+function errorHandler(err, req, res, next) {
+    if (err) {
         console.log(err);
-        res.send('<h1> Error in server </h1>');
+        res.send('Error in server');
     }
 }

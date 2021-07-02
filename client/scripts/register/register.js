@@ -36,7 +36,6 @@ async function register() {
                     body: JSON.stringify(data)});
                 let resData = await resp.json();
 
-            // if user already exists, show error message
             if (!resData.status) {
                 document.getElementById('message').textContent = resData.message;
             }

@@ -63,7 +63,7 @@ server.get("/login", auth.isNotAuth, function (req, res) {
 server.post("/login", passport.authenticate('local',
     { successRedirect: '/success-login', failureRedirect: '/failure-login', failureFlash: true}));
 
-server.delete("/logout", async function (req, res) {
+server.delete("/logout", function (req, res) {
     req.logOut();
     res.end();
 });

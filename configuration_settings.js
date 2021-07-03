@@ -6,6 +6,7 @@ module.exports = {
     root: root,
     dbConnectionString: "mongodb://localhost:27017/",
     dbName: "booksdir",
+    logsCollection: 'logs',
     storeCollection: "sessions",
     secret: "badook",
     sessionExpDate: 24*60*60*1000 // time in milliseconds

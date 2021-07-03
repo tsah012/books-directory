@@ -6,9 +6,9 @@ const auth = require('./custom_modules/routers/authMiddlewares');
 const appAuthorization = require('./custom_modules/routers/appAuthentication');
 const usersDAL = require('./custom_modules/DAL/users');
 const mongo = require('./mongo');
+const dbLogger = require('./custom_modules/logger');
 
 const path = require('path');
-const mongodb = require('mongodb').MongoClient;
 const express = require('express');
 const flash = require('express-flash');
 const session = require('express-session');
@@ -30,7 +30,7 @@ server.use(cookieParser());
 server.use(morgan('dev'));
 server.use(cors());
 server.use(express.static(path.join(config.root, 'client')));
-server.use(express.urlencoded());
+server.use(express.urlencoded({extended: false}));
 server.use(express.json());
 server.use(flash());
 server.use(session({
@@ -67,11 +67,11 @@ mongo.connect(function () {
     });
 });
 
-
 // Error handler middleware in order to avoid crushing of the server
 function errorHandler(err, req, res, next) {
     if (err) {
         console.log(err);
+        dbLogger.saveLog(err);
         res.send('Error in server');
     }
 }

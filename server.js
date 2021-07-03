@@ -1,11 +1,11 @@
-const config = require("./configuration_settings");
-const passportConfiguration = require('./passport-config');
+const config = require("./custom_modules/configuration/app");
+const passportConfiguration = require('./custom_modules/configuration/passport/local');
 const usersRouter = require("./custom_modules/routers/users");
 const booksRouter = require("./custom_modules/routers/books");
 const auth = require('./custom_modules/routers/authMiddlewares');
 const appAuthorization = require('./custom_modules/routers/appAuthentication');
 const usersDAL = require('./custom_modules/DAL/users');
-const mongo = require('./mongo');
+const mongo = require('./custom_modules/mongo');
 const dbLogger = require('./custom_modules/logger');
 
 const path = require('path');

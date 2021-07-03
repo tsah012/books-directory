@@ -1,4 +1,4 @@
-const config = require("./configuration_settings");
+const config = require("../configuration/app");
 const mongodb = require('mongodb').MongoClient;
 var _db = false;
 

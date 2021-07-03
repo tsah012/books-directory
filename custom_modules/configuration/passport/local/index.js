@@ -1,4 +1,4 @@
-const usersDAL = require('./custom_modules/DAL/users');
+const usersDAL = require('../../../DAL/users');
 const localStrategy = require('passport-local').Strategy;
 const customFields = { usernameField: 'mail', passwordField: 'password' }
 

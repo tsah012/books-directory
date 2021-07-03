@@ -2,7 +2,8 @@ const express = require("express");
 const passport = require('passport');
 const path = require('path');
 const auth = require('./authMiddlewares');
-const config = require('../../configuration_settings');
+const config = require('../configuration/app');
+const dbLogger = require('../../custom_modules/logger');
 
 const router = express.Router();
 
@@ -33,6 +34,7 @@ router.get("/failure-login", function (req, res) {
         res.send({ success: false, message: errorMessage });   
     } catch (error) {
         console.log(error);
+        dbLogger.saveLog(error);
         res.end();
     }
 });

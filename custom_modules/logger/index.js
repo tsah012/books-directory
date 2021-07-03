@@ -1,4 +1,4 @@
-const config = require('../../configuration_settings');
+const config = require('../configuration/app');
 const winston = require('winston');
 const format = winston.format;
 require('winston-mongodb');

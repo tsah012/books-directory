@@ -2,7 +2,8 @@ const config = require("./configuration_settings");
 const passportConfiguration = require('./passport-config');
 const usersRouter = require("./custom_modules/routers/users");
 const booksRouter = require("./custom_modules/routers/books");
-const auth = require('./custom_modules/routers/authMiddlewares')
+const auth = require('./custom_modules/routers/authMiddlewares');
+const appAuthorization = require('./custom_modules/routers/appAuthentication');
 const usersDAL = require('./custom_modules/DAL/users');
 const mongo = require('./mongo');
 
@@ -28,7 +29,7 @@ const mongoSessionStore = new MongoDBStore({
 server.use(cookieParser());
 server.use(morgan('dev'));
 server.use(cors());
-server.use(express.static(path.join(__dirname, 'client')));
+server.use(express.static(path.join(config.root, 'client')));
 server.use(express.urlencoded());
 server.use(express.json());
 server.use(flash());
@@ -49,41 +50,12 @@ server.use(passport.session());
 passportConfiguration.configure(passport);
 
 // routers
+server.use(appAuthorization);
 server.use('/api', usersRouter);
 server.use('/api', booksRouter);
 
 server.get("/", auth.isAuth, function (req, res) {
-    res.sendFile(path.join(__dirname, 'client/pages/home/index.html'));
-});
-
-server.get("/login", auth.isNotAuth, function (req, res) {
-    res.sendFile(path.join(__dirname, 'client/pages/login/index.html'));
-});
-
-server.post("/login", passport.authenticate('local',
-    { successRedirect: '/success-login', failureRedirect: '/failure-login', failureFlash: true}));
-
-server.delete("/logout", function (req, res) {
-    req.logOut();
-    res.end();
-});
-
-server.get("/register", auth.isNotAuth, function (req, res) {
-    res.sendFile(path.join(__dirname, 'client/pages/register/index.html'));
-});
-
-server.get("/success-login", function (req, res) {
-    res.send({ success: true });
-});
-
-server.get("/failure-login", function (req, res) {
-    try {
-        errorMessage = req.flash().error[0]
-        res.send({ success: false, message: errorMessage });   
-    } catch (error) {
-        console.log(error);
-        res.end();
-    }
+    res.sendFile(path.join(config.root, 'client/pages/home/index.html'));
 });
 
 

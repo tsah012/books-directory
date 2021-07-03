@@ -1,5 +1,9 @@
+const process = require('process');
+const root = process.cwd();
+
 module.exports = {
     port: 3000,
+    root: root,
     dbConnectionString: "mongodb://localhost:27017/",
     dbName: "booksdir",
     storeCollection: "sessions",

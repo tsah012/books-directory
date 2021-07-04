@@ -1,6 +1,7 @@
 const mongo = require('../../mongo');
 const usersCol = require('../../configuration/app').usersCollection;
-const ObjectId = require('mongodb').ObjectId
+const ObjectId = require('mongodb').ObjectId;
+const bcrypt = require('bcrypt');
 
 
 module.exports.getUserById = async function (userId) {
@@ -37,7 +38,8 @@ module.exports.addUser = async function (_name, _mail, _password, _admin=false, 
     try {
         validateUserFields(_name, _mail, _password);
         const db = mongo.getDB();
-        const user = await db.collection(usersCol).insertOne({name: _name, mail:_mail, password:_password, admin:_admin, books:_books});
+        const hashedPassword = await bcrypt.hash(_password, 10);
+        const user = await db.collection(usersCol).insertOne({name: _name, mail:_mail, password:hashedPassword, admin:_admin, books:_books});
         return user;
     } 
     catch (error) 

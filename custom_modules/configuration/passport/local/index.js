@@ -1,5 +1,6 @@
 const usersDAL = require('../../../DAL/users');
 const localStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt');
 const customFields = { usernameField: 'mail', passwordField: 'password' }
 
 async function authenticationCB(mail, password, done) {
@@ -9,7 +10,7 @@ async function authenticationCB(mail, password, done) {
             return done(null, false, { message: 'Account with given email does not exist' });
         }
 
-        if (user.password != password) {
+        if (!(await bcrypt.compare(password, user.password))) {
             return done(null, false, { message: 'Incorrect password' });
         }
 

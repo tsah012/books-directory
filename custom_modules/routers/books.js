@@ -1,6 +1,5 @@
 const express = require("express");
 const libraryDAL = require('../DAL/library');
-const dbLogger = require('../logger');
 const httpStatusCodes = require("http-status-codes").StatusCodes;
 
 const router = express.Router();

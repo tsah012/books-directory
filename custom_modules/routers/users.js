@@ -1,5 +1,4 @@
 const express = require("express");
-const dbLogger = require('../logger');
 const usersDAL = require('../DAL/users');
 const httpStatusCodes = require("http-status-codes").StatusCodes;
 const router = express.Router();

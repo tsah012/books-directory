@@ -3,7 +3,6 @@ const passport = require('passport');
 const path = require('path');
 const auth = require('./authMiddlewares');
 const config = require('../configuration/app');
-const dbLogger = require('../../custom_modules/logger');
 
 const router = express.Router();
 

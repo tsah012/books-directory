@@ -1,7 +1,6 @@
 const express = require("express");
 const logsDAL = require('../DAL/logs');
 const auth = require('./authMiddlewares');
-const dbLogger = require('../logger');
 const httpStatusCodes = require("http-status-codes").StatusCodes;
 
 const router = express.Router();

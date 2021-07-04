@@ -42,6 +42,9 @@ module.exports.addUser = async function (_name, _mail, _password, _admin=false, 
     } 
     catch (error) 
     {
+        if (error.message.includes('duplicate key')){
+            error.clientMessage = 'Email already in use';
+        }
         throw error;
     }
 }

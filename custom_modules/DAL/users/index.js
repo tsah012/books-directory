@@ -1,11 +1,12 @@
 const mongo = require('../../mongo');
+const usersCol = require('../../configuration/app').usersCollection;
 const ObjectId = require('mongodb').ObjectId
 
 
 module.exports.getUserById = async function (userId) {
     try {
         const db = mongo.getDB();
-        const user = await db.collection('users').findOne({_id:ObjectId(userId)});
+        const user = await db.collection(usersCol).findOne({_id:ObjectId(userId)});
         if (!user){
             return false;
         }
@@ -20,7 +21,7 @@ module.exports.getUserById = async function (userId) {
 module.exports.getUserByMail = async function (_mail) {
     try {
         const db = mongo.getDB();
-        const user = await db.collection('users').findOne({mail:_mail});
+        const user = await db.collection(usersCol).findOne({mail:_mail});
         if (!user){
             return false;
         }
@@ -36,7 +37,7 @@ module.exports.addUser = async function (_name, _mail, _password, _admin=false, 
     try {
         validateUserFields(_name, _mail, _password);
         const db = mongo.getDB();
-        const user = await db.collection('users').insertOne({name: _name, mail:_mail, password:_password, admin:_admin, books:_books});
+        const user = await db.collection(usersCol).insertOne({name: _name, mail:_mail, password:_password, admin:_admin, books:_books});
         return user;
     } 
     catch (error) 
@@ -47,7 +48,7 @@ module.exports.addUser = async function (_name, _mail, _password, _admin=false, 
 
 function validateUserFields(name, email, password){
     if (!(validateName(name) && validateEmail(email) && validatePassword(password))){
-        throw ("Invalid input");
+        throw new Error("Invalid input");
     }
 }
 

@@ -22,6 +22,6 @@ module.exports.isAdmin = function(req, res, next){
         next();
     }else{
         res.status(httpStatusCodes.UNAUTHORIZED);
-        res.end();
+        res.send('Access denied. Administrator permissions required.');
     }
 }

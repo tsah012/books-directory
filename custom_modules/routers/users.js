@@ -1,7 +1,7 @@
 const express = require("express");
-const libraryDAL = require('../DAL/library');
+const dbLogger = require('../logger');
 const usersDAL = require('../DAL/users')
-const httpStatusCodes = require("http-status-codes").StatusCodes
+const httpStatusCodes = require("http-status-codes").StatusCodes;
 const router = express.Router();
 
 router.post('/user/add', async function (req, res) {
@@ -10,9 +10,9 @@ router.post('/user/add', async function (req, res) {
         res.send({status: true, message: 'Request ended successfully'});
     }
     catch (err) {
-        let msg = "Issue occured when creating user. Error:\n" + err;
-        console.log(msg);
-        res.send({status: false, message: err});
+        dbLogger.saveLog(err);
+        console.log(err);
+        res.send({status: false, message: 'registration failed'});
     }
 });
 

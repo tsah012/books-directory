@@ -2,6 +2,7 @@ const config = require("./custom_modules/configuration/app");
 const passportConfiguration = require('./custom_modules/configuration/passport/local');
 const usersRouter = require("./custom_modules/routers/users");
 const booksRouter = require("./custom_modules/routers/books");
+const adminRouter = require('./custom_modules/routers/admin');
 const auth = require('./custom_modules/routers/authMiddlewares');
 const appAuthorization = require('./custom_modules/routers/appAuthentication');
 const usersDAL = require('./custom_modules/DAL/users');
@@ -30,7 +31,7 @@ server.use(cookieParser());
 server.use(morgan('dev'));
 server.use(cors());
 server.use(express.static(path.join(config.root, 'client')));
-server.use(express.urlencoded({extended: false}));
+server.use(express.urlencoded({ extended: false }));
 server.use(express.json());
 server.use(flash());
 server.use(session({
@@ -53,6 +54,7 @@ passportConfiguration.configure(passport);
 server.use(appAuthorization);
 server.use('/api', usersRouter);
 server.use('/api', booksRouter);
+server.use('/admin', adminRouter);
 
 server.get("/", auth.isAuth, function (req, res) {
     res.sendFile(path.join(config.root, 'client/pages/home/index.html'));
@@ -72,6 +74,6 @@ function errorHandler(err, req, res, next) {
     if (err) {
         console.log(err);
         dbLogger.saveLog(err);
-        res.send('Error in server');
+        res.send({ status: false, message: 'Error in server' });
     }
 }

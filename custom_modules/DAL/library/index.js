@@ -1,5 +1,5 @@
 const mongo = require('../../mongo');
-const booksCol = require('../../configuration/app');
+const booksCol = require('../../configuration/app').booksCollection;
 
 module.exports.getLibraryBooks = async function () {
     try {

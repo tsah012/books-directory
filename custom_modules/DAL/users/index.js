@@ -48,7 +48,9 @@ module.exports.addUser = async function (_name, _mail, _password, _admin=false, 
 
 function validateUserFields(name, email, password){
     if (!(validateName(name) && validateEmail(email) && validatePassword(password))){
-        throw new Error("Invalid input");
+        let error = new Error();
+        error.clientMessage = 'INVALID INPUT';
+        throw (error);
     }
 }
 

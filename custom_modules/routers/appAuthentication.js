@@ -28,14 +28,13 @@ router.get("/success-login", function (req, res) {
     res.send({ success: true });
 });
 
-router.get("/failure-login", function (req, res) {
+router.get("/failure-login", function (req, res, next) {
     try {
-        errorMessage = req.flash().error[0]
+        errorMessage = req.flash().error[0];
         res.send({ success: false, message: errorMessage });   
     } catch (error) {
-        console.log(error);
-        dbLogger.saveLog(error);
-        res.end();
+        error.clientMessage = 'failure-login';
+        next(error);
     }
 });
 

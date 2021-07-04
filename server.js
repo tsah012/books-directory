@@ -70,10 +70,10 @@ mongo.connect(function () {
 });
 
 // Error handler middleware in order to avoid crushing of the server
-function errorHandler(err, req, res, next) {
+async function errorHandler(err, req, res, next) {
     if (err) {
         console.log(err);
         dbLogger.saveLog(err);
-        res.send({ status: false, message: 'Error in server' });
+        res.send({ status: false, message: err.clientMessage || 'Error in server' });
     }
 }

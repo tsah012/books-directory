@@ -16,7 +16,7 @@ router.post("/login", passport.authenticate('local',
 
 router.delete("/logout", function (req, res) {
     req.logOut();
-    res.end();
+    res.send({ status: true });
 });
 
 router.get("/register", auth.isNotAuth, function (req, res) {
@@ -24,13 +24,13 @@ router.get("/register", auth.isNotAuth, function (req, res) {
 });
 
 router.get("/success-login", function (req, res) {
-    res.send({ success: true });
+    res.send({ status: true });
 });
 
 router.get("/failure-login", function (req, res, next) {
     try {
         errorMessage = req.flash().error[0];
-        res.send({ success: false, message: errorMessage });   
+        res.send({ status: false, message: errorMessage });   
     } catch (error) {
         error.clientMessage = 'failure-login';
         next(error);

@@ -8,16 +8,20 @@
 
 <body>
     <h1 id='greet'></h1>
-    <p>
-        This site is going to be a books directory site
-    </p>
+    <h1 id='error'></h1>
+    <div>
+        <ul id='ulBooksList'>
+        </ul>
+    </div>
 </body>
 <footer>
     <div>
-        <button onclick="logout()" style="font-weight: bold;">Logout</button>
+        <button onclick="ctrl.logout()" style="font-weight: bold;">Logout</button>
     </div>
 </footer>
-<script src="/scripts/home/home.js" type="text/javascript"></script>
-<script src="/scripts/home/app.js" type="text/javascript"></script>
+<script src="/scripts/home/model.js" type="text/javascript"></script>
+<script src="/scripts/home/view.js" type="text/javascript"></script>
+<script src="/scripts/home/controller.js" type="text/javascript"></script>
+<script src="/scripts/home/load.js" type="text/javascript"></script>
 
 </html>

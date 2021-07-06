@@ -28,7 +28,7 @@ async function login() {
                 },
                 body: JSON.stringify(data)});
             let resData = await resp.json();
-            if (!resData.success) {
+            if (!resData.status) {
                 document.getElementById('message').textContent = resData.message;
             }
             else{

@@ -1,13 +1,15 @@
 (async function () {
 
+    // const ctrl = new Controller();
     let url = window.location.origin + '/api/user';
     try {
-        let res = await fetch(url);
-        let user = await res.json();
-        document.getElementById('greet').textContent = 'Hello ' + user.name;
+        const res = await fetch(url);
+        const user = await res.json();
+        localStorage['user'] = JSON.stringify(user);
+        ctrl.loadData();
     }
     catch (error) {
         console.log('error occurred during fetching user detalis. error:\n' + error.message);
-    }
 
-}())
+    }
+})()

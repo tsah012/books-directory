@@ -1,6 +1,4 @@
 (async function () {
-
-    // const ctrl = new Controller();
     let url = window.location.origin + '/api/user';
     try {
         const res = await fetch(url);

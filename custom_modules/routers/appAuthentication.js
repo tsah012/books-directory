@@ -11,7 +11,7 @@ router.get("/login", auth.isNotAuth, function (req, res) {
     res.sendFile(path.join(config.root, 'client/pages/login/index.html'));
 });
 
-router.post("/login", passport.authenticate('local',
+router.post("/login",auth.isNotAuth, passport.authenticate('local',
     { successRedirect: '/success-login', failureRedirect: '/failure-login', failureFlash: true}));
 
 router.delete("/logout", function (req, res) {

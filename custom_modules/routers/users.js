@@ -1,5 +1,6 @@
 const express = require("express");
 const usersDAL = require('../DAL/users');
+const libraryDAL = require('../DAL/library');
 const auth = require('./authMiddlewares');
 const httpStatusCodes = require("http-status-codes").StatusCodes;
 const router = express.Router();
@@ -7,12 +8,16 @@ const router = express.Router();
 router.post('/user/add', async function (req, res, next) {
     try {
         let user = await usersDAL.addUser(req.body.name, req.body.mail, req.body.password);
-        res.status(httpStatusCodes.CREATED).send({status: true, message: 'Request ended successfully'});
+        res.status(httpStatusCodes.CREATED).send({ status: true, message: 'Request ended successfully' });
     }
     catch (err) {
         next(err);
     }
 });
+
+
+// Authenticated routes - only if user is loggen in
+//------------------------------------------------------------------
 
 router.get('/user', auth.isAuth, async function (req, res, next) {
     try {
@@ -25,5 +30,16 @@ router.get('/user', auth.isAuth, async function (req, res, next) {
     }
 });
 
+router.put('/user/books', auth.isAuth, async function (req, res, next) {
+    try {
+        let userBooksIds = req.body.books.map((book) => { return book._id });
+        let books = await libraryDAL.getBooks(userBooksIds);
+        await usersDAL.updateUserBooks(req.user._id, books)
+        res.send({ status: true, message: 'Request ended successfully' });
+    }
+    catch (err) {
+        next(err);
+    }
+});
 
 module.exports = router;

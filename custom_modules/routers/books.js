@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/library', async function (req, res, next) {
     try {
-        let books = await libraryDAL.getLibraryBooks();
+        let books = await libraryDAL.getAllBooks();
         res.send(books);
     }
     catch (err) {

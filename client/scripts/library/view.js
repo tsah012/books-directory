@@ -21,7 +21,7 @@ class View {
         let booksList = document.getElementById('ulBooksList');
         let newBook = document.createElement('li');
         let bookText = document.createTextNode(`${book.name} - ${book.author}`);
-        newBook.setAttribute('id', book.id);
+        newBook.setAttribute('id', book._id);
         newBook.appendChild(bookText);
         booksList.appendChild(newBook);
     }

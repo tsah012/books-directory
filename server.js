@@ -27,9 +27,9 @@ const mongoSessionStore = new MongoDBStore({
     collection: config.storeCollection
 });
 
+server.use(cors());
 server.use(cookieParser());
 server.use(morgan('dev'));
-server.use(cors());
 server.use(express.static(path.join(config.root, 'client')));
 server.use(express.urlencoded({ extended: false }));
 server.use(express.json());

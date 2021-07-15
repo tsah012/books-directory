@@ -12,6 +12,7 @@ class Controller {
             window.location.href = this.baseUrl + '/login';
         }
         catch (error) {
+            this.view.setErrorMessage(error.message);
             console.log('error occurred during logout. error:\n' + error);
         }
     }

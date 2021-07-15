@@ -17,8 +17,35 @@ class Controller {
     }
 
     async loadData(){
-        const lib = await this.model.getLibrary();
-        this.view.refresh(lib);
+        try {
+            const lib = await this.model.getLibrary();
+            this.view.refresh(lib);
+        } catch (error) {
+            this.view.setErrorMessage(error.message)
+        }
+    }
+
+    async save(){
+        const books = [];
+        document.querySelectorAll('[borrow]').forEach((book)=>{
+            books.push(book.id);
+        });
+
+        let user = JSON.parse(localStorage['user']);
+        user.books.forEach((book)=>{
+            books.push(book._id)
+        });
+
+        try {
+            const res = await this.model.updateBooks(books);
+            if (res.status){
+                user.books = res.data;
+            }else{
+                this.view.setErrorMessage(res.message);
+            }
+        } catch (error) {
+            this.view.setErrorMessage(error.message);
+        }
     }
 }
 

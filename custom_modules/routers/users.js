@@ -32,9 +32,8 @@ router.get('/user', auth.isAuth, async function (req, res, next) {
 
 router.put('/user/books', auth.isAuth, async function (req, res, next) {
     try {
-        let userBooksIds = req.body.books.map((book) => { return book._id });
         // Get books from DB in order to validate books and remove duplicates
-        let books = await libraryDAL.getBooks(userBooksIds);
+        let books = await libraryDAL.getBooks(req.body.books);
         let result = await usersDAL.updateUserBooks(req.user._id, books);
 
         if (result.result.ok) {

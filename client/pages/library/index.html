@@ -9,13 +9,16 @@
 </head>
 <body>
     <h1>Books Library</h1>
-    <h1 id='error'></h1>
+    <h3 id='error' style="color: red;"></h3>
     <div>
         <ul id='ulBooksList'>
         </ul>
     </div>
 </body>
 <footer>
+    <div>
+        <button onclick="ctrl.save()" style="font-weight: bold;">Borrow</button>
+    </div>
     <div>
         <button onclick="ctrl.logout()" style="font-weight: bold;">Logout</button>
     </div>

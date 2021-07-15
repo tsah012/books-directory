@@ -33,9 +33,16 @@ router.get('/user', auth.isAuth, async function (req, res, next) {
 router.put('/user/books', auth.isAuth, async function (req, res, next) {
     try {
         let userBooksIds = req.body.books.map((book) => { return book._id });
+        // Get books from DB in order to validate books and remove duplicates
         let books = await libraryDAL.getBooks(userBooksIds);
-        await usersDAL.updateUserBooks(req.user._id, books)
-        res.send({ status: true, message: 'Request ended successfully' });
+        let result = await usersDAL.updateUserBooks(req.user._id, books);
+
+        if (result.result.ok) {
+            res.send({ status: true, message: 'Request ended successfully', data: books });
+        }
+        else{
+            res.send({ status: false, message: 'Request failed' });
+        }
     }
     catch (err) {
         next(err);

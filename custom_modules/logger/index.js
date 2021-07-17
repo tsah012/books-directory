@@ -19,6 +19,7 @@ const logger = winston.createLogger({
 
 function saveLog(logObject){
     try {
+        logObject.localTimestamp = Date();
         logger.error('new error log. details in metadata', {metadata: logObject});
     } catch (error) {
         console.log('There was an error during adding a log to mongodb. error:\n' + error);

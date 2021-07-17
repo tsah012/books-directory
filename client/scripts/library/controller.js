@@ -26,12 +26,12 @@ class Controller {
     }
 
     async save(){
+        const user = JSON.parse(localStorage['user']);
         const books = [];
         document.querySelectorAll('[borrow]').forEach((book)=>{
             books.push(book.id);
         });
 
-        let user = JSON.parse(localStorage['user']);
         user.books.forEach((book)=>{
             books.push(book._id)
         });
@@ -40,6 +40,7 @@ class Controller {
             const res = await this.model.updateBooks(books);
             if (res.status){
                 user.books = res.data;
+                localStorage['user'] = JSON.stringify(user);
             }else{
                 this.view.setErrorMessage(res.message);
             }

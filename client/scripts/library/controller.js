@@ -47,6 +47,8 @@ class Controller {
         } catch (error) {
             this.view.setErrorMessage(error.message);
         }
+
+        window.location.href = this.baseUrl;
     }
 }
 

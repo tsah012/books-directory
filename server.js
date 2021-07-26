@@ -1,5 +1,5 @@
 const config = require("./custom_modules/configuration/app");
-const passportConfiguration = require('./custom_modules/configuration/passport/local');
+const passportConfiguration = require('./custom_modules/configuration/passport/jwt');
 const usersRouter = require("./custom_modules/routers/users");
 const booksRouter = require("./custom_modules/routers/books");
 const adminRouter = require('./custom_modules/routers/admin');
@@ -46,9 +46,8 @@ server.use(session({
     }
 }));
 
-server.use(passport.initialize());
-server.use(passport.session());
 passportConfiguration.configure(passport);
+server.use(passport.initialize());
 
 // routers
 server.use(appAuthorization);

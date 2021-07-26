@@ -24,6 +24,7 @@ router.get("/register", auth.isNotAuth, function (req, res) {
 });
 
 router.get("/success-login", function (req, res) {
+    
     res.send({ status: true });
 });
 

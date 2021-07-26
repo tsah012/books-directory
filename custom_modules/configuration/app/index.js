@@ -11,5 +11,6 @@ module.exports = {
     logsCollection: 'logs',
     storeCollection: 'sessions',
     secret: 'badook',
+    tokenExpirationTime: '1d', //expressed in seconds or a string describing a time span [zeit/ms](https://github.com/zeit/ms.js)
     sessionExpDate: 24*60*60*1000 // time in milliseconds
 }

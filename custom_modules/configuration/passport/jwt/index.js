@@ -1,13 +1,20 @@
 const usersDAL = require('../../../DAL/users');
-const localStrategy = require('passport-local').Strategy;
+const jwtStrategy = require('passport-jwt').Strategy;
+const extractJWT = require('passport-jwt').ExtractJwt;
 const bcrypt = require('bcrypt');
-const customFields = { usernameField: 'mail', passwordField: 'password' }
+const utils = require('../../../utils');
 
-async function authenticationCB(mail, password, done) {
+passportJWTOptions = {
+    secretOrKey: utils.getPublicKey(),
+    jwtFromRequest: extractJWT.fromAuthHeaderAsBearerToken(),
+    algorithms: ['RS256']
+}
+
+async function authenticationCB(payload, done) {
     try {
-        const user = await usersDAL.getUserByMail(mail);
+        const user = await usersDAL.getUserById(payload.sub);
         if (!user) {
-            return done(null, false, { message: 'Account with given email does not exist' });
+            return done(null, false, { message: 'Account does not exist' });
         }
 
         if (!(await bcrypt.compare(password, user.password))) {
@@ -23,7 +30,7 @@ async function authenticationCB(mail, password, done) {
 
 
 module.exports.configure = function (passport) {
-    const strategy = new localStrategy(customFields, authenticationCB)
+    const strategy = new jwtStrategy(passportJWTOptions, authenticationCB)
 
     passport.use(strategy);
     passport.serializeUser((user, done) => { done(null, user._id) });

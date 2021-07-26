@@ -1,7 +1,8 @@
 const httpStatusCodes = require("http-status-codes").StatusCodes
+const passport = require('passport');
 
 module.exports.isAuth = function(req, res, next){
-    if (req.isAuthenticated()){
+    if (passport.authenticate('jwt', {session:false})){
         next();
     }else{
         res.status(httpStatusCodes.UNAUTHORIZED);
@@ -18,7 +19,7 @@ module.exports.isNotAuth = function(req, res, next){
 }
 
 module.exports.isAdmin = function(req, res, next){
-    if (req.isAuthenticated() && req.user.admin){
+    if (req.user.admin){
         next();
     }else{
         res.status(httpStatusCodes.UNAUTHORIZED);

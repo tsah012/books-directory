@@ -3,12 +3,25 @@ const passport = require('passport');
 const path = require('path');
 const auth = require('./authMiddlewares');
 const config = require('../configuration/app');
-
+const usersDAL = require('../DAL/users');
+const utils = require('../utils');
 const router = express.Router();
 
 
-router.get("/login", auth.isNotAuth, function (req, res) {
-    res.sendFile(path.join(config.root, 'client/pages/login/index.html'));
+router.get("/login", async function (req, res) {
+    try {
+        const user = await usersDAL.getUserByMail('admin@admin.com');
+        if (user){
+            const JWTtoken = utils.issueJWT(user);
+            res.json({success: true, token: JWTtoken.token});
+        }
+        else{
+            res.status(404).json({success:false});
+        }
+    } catch (error) {
+        next(error);
+    }
+    // res.sendFile(path.join(config.root, 'client/pages/login/index.html'));
 });
 
 router.post("/login",auth.isNotAuth, passport.authenticate('local',

@@ -2,12 +2,20 @@ const httpStatusCodes = require("http-status-codes").StatusCodes
 const passport = require('passport');
 
 module.exports.isAuth = function(req, res, next){
-    if (passport.authenticate('jwt', {session:false})){
+    passport.authenticate('jwt', {session:false}, function (err, user, info){
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.json({
+                status: 'error',
+                error: 'ANOTHORIZED_USER'
+            });
+        }
+        // Forward user information to the next middleware
+        req.user = user; 
         next();
-    }else{
-        res.status(httpStatusCodes.UNAUTHORIZED);
-        res.end();
-    }
+    })(req, res, next);
 }
 
 module.exports.isNotAuth = function(req, res, next){

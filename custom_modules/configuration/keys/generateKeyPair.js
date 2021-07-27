@@ -9,7 +9,7 @@ function generateKeyPair(){
     });
 
     fs.writeFileSync(__dirname + '/rsa_pub.pem', keyPair.publicKey);
-    fs.writeFileSync(__dirname + '/rsa_priv.pem', keyPair.publicKey);
+    fs.writeFileSync(__dirname + '/rsa_priv.pem', keyPair.privateKey);
 }
 
 

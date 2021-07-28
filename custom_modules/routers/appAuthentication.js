@@ -12,7 +12,7 @@ router.get("/login", auth.isNotAuth, function (req, res) {
     res.sendFile(path.join(config.root, 'client/pages/login/index.html'));
 });
 
-router.post("/login", auth.isNotAuth, function (req, res) {
+router.post("/login", auth.isNotAuth, async function (req, res) {
     try {
         const user = await usersDAL.getUserByMail(req.body.mail);
         if (user) {

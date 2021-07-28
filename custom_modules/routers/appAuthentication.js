@@ -14,7 +14,7 @@ router.get("/login", auth.isNotAuth, function (req, res) {
 
 router.post("/login", auth.isNotAuth, function (req, res) {
     try {
-        const user = await usersDAL.getUserByMail('admin@admin.com');
+        const user = await usersDAL.getUserByMail(req.body.mail);
         if (user) {
             if (await bcrypt.compare(req.body.password, user.password)) {
                 const JWT = utils.issueJWT(user);

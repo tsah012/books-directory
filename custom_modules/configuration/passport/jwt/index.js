@@ -1,7 +1,6 @@
 const usersDAL = require('../../../DAL/users');
 const jwtStrategy = require('passport-jwt').Strategy;
 const extractJWT = require('passport-jwt').ExtractJwt;
-const bcrypt = require('bcrypt');
 const utils = require('../../../utils');
 
 passportJWTOptions = {

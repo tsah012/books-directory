@@ -1,6 +1,7 @@
 const express = require("express");
 const passport = require('passport');
 const path = require('path');
+const bcrypt = require('bcrypt');
 const auth = require('./authMiddlewares');
 const config = require('../configuration/app');
 const usersDAL = require('../DAL/users');

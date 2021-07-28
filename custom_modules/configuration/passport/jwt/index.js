@@ -17,10 +17,6 @@ async function authenticationCB(payload, done) {
             return done(null, false, { message: 'Account does not exist' });
         }
 
-        if (!(await bcrypt.compare(password, user.password))) {
-            return done(null, false, { message: 'Incorrect password' });
-        }
-
         return done(null, user);
     }
     catch (error) {

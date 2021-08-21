@@ -11,10 +11,10 @@ router.get("/login", auth.isNotAuth, function (req, res) {
     res.sendFile(path.join(config.root, 'client/pages/login/index.html'));
 });
 
-router.post("/login",auth.isNotAuth, passport.authenticate('local',
-    { successRedirect: '/success-login', failureRedirect: '/failure-login', failureFlash: true}));
+router.post("/login", auth.isNotAuth, passport.authenticate('local',
+    { successRedirect: '/success-login', failureRedirect: '/failure-login', failureFlash: true }));
 
-router.delete("/logout", function (req, res) {
+router.delete("/logout", auth.isAuth, function (req, res) {
     req.logOut();
     res.send({ status: true });
 });
@@ -30,7 +30,7 @@ router.get("/success-login", function (req, res) {
 router.get("/failure-login", function (req, res, next) {
     try {
         errorMessage = req.flash().error[0];
-        res.send({ status: false, message: errorMessage });   
+        res.send({ status: false, message: errorMessage });
     } catch (error) {
         error.clientMessage = 'failure-login';
         next(error);
